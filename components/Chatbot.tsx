@@ -102,7 +102,6 @@ export default function Chatbot() {
                         : "text-white"
                     }`}
                     style={!message.isBot ? {backgroundColor: '#030213'} : {}}
-                    }`}
                   >
                     <p>{message.content}</p>
                   </div>
