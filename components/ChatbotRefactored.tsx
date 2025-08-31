@@ -1,0 +1,71 @@
+'use client';
+
+import { Message } from '@/types';
+import { CHATBOT_DIMENSIONS } from '@/constants';
+import { useChatbot } from '@/hooks/useChatbot';
+import { Avatar } from './ui/Avatar';
+import { MessageBubble } from './ui/MessageBubble';
+import { NavigationButtons } from './ui/NavigationButtons';
+import { NavigationButton } from './ui/NavigationButton';
+import { ChatInput } from './ui/ChatInput';
+
+export default function Chatbot() {
+  const {
+    messages,
+    showInitialButtons,
+    isExpanded,
+    handleSectionClick,
+    handleBackToHome
+  } = useChatbot();
+
+  const containerSize = isExpanded 
+    ? `${CHATBOT_DIMENSIONS.expanded.width} ${CHATBOT_DIMENSIONS.expanded.height}`
+    : `${CHATBOT_DIMENSIONS.collapsed.width} ${CHATBOT_DIMENSIONS.collapsed.height}`;
+
+  return (
+    <div className="size-full flex items-center justify-center bg-gray-50 p-4">
+      <div className={`flex flex-col shadow-lg border border-gray-200 transition-all duration-500 ease-in-out rounded-lg bg-white ${containerSize}`}>
+        
+        {/* Header */}
+        <div className="flex items-center gap-3 p-6 border-b border-gray-200 bg-gray-50">
+          <Avatar 
+            initials="YN" 
+            name="Yugyeong Na" 
+            status="Online" 
+          />
+        </div>
+
+        {/* Messages Area */}
+        <div className="flex-1 p-6 overflow-y-auto">
+          <div className="space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
+              >
+                <MessageBubble message={message} />
+              </div>
+            ))}
+          </div>
+          
+          {/* Initial Navigation Buttons */}
+          {showInitialButtons && (
+            <NavigationButtons onSectionClick={handleSectionClick} />
+          )}
+
+          {/* Back to Home Button */}
+          {isExpanded && !showInitialButtons && (
+            <div className="flex justify-left mt-6">
+              <NavigationButton onClick={handleBackToHome}>
+                Back to Home
+              </NavigationButton>
+            </div>
+          )}
+        </div>
+
+        {/* Input Area */}
+        <ChatInput />
+      </div>
+    </div>
+  );
+}
