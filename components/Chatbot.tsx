@@ -56,7 +56,7 @@ export default function Chatbot() {
         isExpanded ? "w-[1000px] h-[1200px]" : "w-[600px] h-[900px]"
       }`}>
         {/* Header */}
-        <div className="flex items-center gap-3 p-6 border-b border-gray-200 bg-gray-50">
+        <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-gray-50">
           <div className="w-10 h-10 rounded-full text-white flex items-center justify-center font-medium" style={{backgroundColor: '#030213'}}>
             YN
           </div>
@@ -70,7 +70,7 @@ export default function Chatbot() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className="flex-1 p-6">
           <div className="space-y-4">
             {messages.map((message) => (
               <div
@@ -78,7 +78,10 @@ export default function Chatbot() {
                 className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
               >
                 {message.isFullWidth ? (
-                  <div className="w-full h-full min-h-[820px] bg-gray-100 rounded-lg p-4 flex items-center justify-center">
+                  <div 
+                    className="w-full bg-gray-100 rounded-lg p-4 flex items-center justify-center overflow-y-auto"
+                    style={{ height: '810px' }}
+                  >
                     <div className="text-center">
                       <h3 className="mb-2">Loading {message.selectedSection}...</h3>
                       <p className="text-gray-600">
@@ -104,7 +107,7 @@ export default function Chatbot() {
           
           {/* Initial Navigation Buttons - Outside message bubbles */}
           {showInitialButtons && (
-            <div className="flex gap-3 justify-left mt-6 flex-wrap">
+            <div className="flex gap-3 justify-left mt-3 flex-wrap">
               {["Articles", "Projects", "About", "Contact"].map((button) => (
                 <button
                   key={button}
@@ -117,26 +120,26 @@ export default function Chatbot() {
             </div>
           )}
 
-          {/* Back to Home Button - Shows when expanded */}
+          {/* Return Home Button - Shows when expanded */}
           {isExpanded && !showInitialButtons && (
-            <div className="flex justify-left mt-6">
+            <div className="flex justify-left mt-3">
               <button
                 onClick={handleBackToHome}
                 className="text-sm h-9 px-4 bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-sm hover:shadow-md transition-shadow duration-200"
               >
-                Back to Home
+                Return
               </button>
             </div>
           )}
         </div>
 
         {/* Input Area */}
-        <div className="p-6 border-t border-gray-200 bg-gray-50">
+        <div className="p-4 border-t border-gray-200 bg-gray-50">
           <div className="flex gap-2">
             <input
               disabled
               placeholder="Click the button..."
-              className="flex-1 bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-400"
+              className="flex-1 text-sm bg-white border border-gray-300 rounded-md px-3 py-2 text-gray-400"
             />
             <button 
               disabled 

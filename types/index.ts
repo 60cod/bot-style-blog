@@ -5,6 +5,7 @@ export interface Message {
   buttons?: string[];
   isFullWidth?: boolean;
   selectedSection?: string;
+  timestamp?: string;
 }
 
 export type NavigationSection = 'Articles' | 'Projects' | 'About' | 'Contact';

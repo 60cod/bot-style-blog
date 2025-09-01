@@ -16,5 +16,3 @@ export const BRAND_COLORS = {
   primary: '#030213',
   avatar: '#030213'
 } as const;
-
-export const LOADING_AREA_HEIGHT = 'min-h-[820px]';

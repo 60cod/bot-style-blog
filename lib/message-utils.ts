@@ -25,9 +25,11 @@ export function createInitialMessage(): Message {
     minute: '2-digit',
     hour12: true
   });
+  
   return {
     id: '1',
-    content: `Hello, I'm Yugyeong Na. What would you like to explore?\n\n<span class="text-xs text-gray-400">${timeString}</span>`,
-    isBot: true
+    content: "Hello, I'm Yugyeong Na. What would you like to explore?",
+    isBot: true,
+    timestamp: timeString
   };
 }

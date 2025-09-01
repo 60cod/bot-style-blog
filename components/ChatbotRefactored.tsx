@@ -23,11 +23,11 @@ export default function Chatbot() {
     : `${CHATBOT_DIMENSIONS.collapsed.width} ${CHATBOT_DIMENSIONS.collapsed.height}`;
 
   return (
-    <div className="size-full flex items-center justify-center bg-gray-50 p-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 p-4">
       <div className={`flex flex-col shadow-lg border border-gray-200 transition-all duration-500 ease-in-out rounded-lg bg-white ${containerSize}`}>
         
         {/* Header */}
-        <div className="flex items-center gap-3 p-6 border-b border-gray-200 bg-gray-50">
+        <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-gray-50">
           <Avatar 
             initials="YN" 
             name="Yugyeong Na" 
@@ -36,7 +36,7 @@ export default function Chatbot() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className="flex-1 p-6">
           <div className="space-y-4">
             {messages.map((message) => (
               <div
@@ -53,11 +53,11 @@ export default function Chatbot() {
             <NavigationButtons onSectionClick={handleSectionClick} />
           )}
 
-          {/* Back to Home Button */}
+          {/* Return Button */}
           {isExpanded && !showInitialButtons && (
-            <div className="flex justify-left mt-6">
+            <div className="flex justify-left mt-3">
               <NavigationButton onClick={handleBackToHome}>
-                Back to Home
+                Return
               </NavigationButton>
             </div>
           )}

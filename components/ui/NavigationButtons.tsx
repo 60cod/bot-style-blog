@@ -8,7 +8,7 @@ interface NavigationButtonsProps {
 
 export function NavigationButtons({ onSectionClick }: NavigationButtonsProps) {
   return (
-    <div className="flex gap-3 justify-left mt-6 flex-wrap">
+    <div className="flex gap-3 justify-left mt-3 flex-wrap">
       {NAVIGATION_SECTIONS.map((section) => (
         <NavigationButton
           key={section}
