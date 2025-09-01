@@ -9,6 +9,7 @@ import { PaginationCarousel } from './ui/PaginationCarousel';
 
 export function ArticlesPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentInput, setCurrentInput] = useState(''); // 현재 검색바 입력값
   const [selectedCategories, setSelectedCategories] = useState<ArticleCategory[]>([]);
   
   const allCategories = getAllCategories();
@@ -36,6 +37,8 @@ export function ArticlesPage() {
   }, [searchQuery, selectedCategories, allCategories, articlesByCategory]);
 
   const handleCategoryToggle = (category: ArticleCategory) => {
+    // 카테고리 변경 시 현재 입력값으로 검색 업데이트
+    setSearchQuery(currentInput);
     setSelectedCategories(prev => 
       prev.includes(category)
         ? prev.filter(c => c !== category)
@@ -57,7 +60,10 @@ export function ArticlesPage() {
           
           {/* Search & Filters */}
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
-            <SearchBar onSearch={setSearchQuery} />
+            <SearchBar 
+              onSearch={setSearchQuery} 
+              onQueryChange={setCurrentInput}
+            />
             <CategoryFilter
               categories={allCategories}
               selectedCategories={selectedCategories}

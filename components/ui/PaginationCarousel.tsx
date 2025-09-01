@@ -23,7 +23,9 @@ export function PaginationCarousel({
     goToNextPage,
     goToPrevPage,
     hasItems,
-    canNavigate
+    canNavigate,
+    hasPrevPage,
+    hasNextPage
   } = usePaginationCarousel(articles, itemsPerPage);
 
   if (!hasItems) {
@@ -37,13 +39,14 @@ export function PaginationCarousel({
   return (
     <div className="relative group">
       {/* Previous Button */}
-      <button
-        onClick={goToPrevPage}
-        disabled={!canNavigate}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 text-white p-2 rounded-full transition-opacity disabled:opacity-30"
-      >
-        <ChevronLeft className="h-5 w-5" />
-      </button>
+      {hasPrevPage && (
+        <button
+          onClick={goToPrevPage}
+          className="absolute left-1 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 text-white p-2 rounded-full transition-opacity"
+        >
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+      )}
 
       {/* Articles Container */}
       <div className="overflow-hidden w-full">
@@ -73,13 +76,14 @@ export function PaginationCarousel({
       </div>
 
       {/* Next Button */}
-      <button
-        onClick={goToNextPage}
-        disabled={!canNavigate}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 text-white p-2 rounded-full transition-opacity disabled:opacity-30"
-      >
-        <ChevronRight className="h-5 w-5" />
-      </button>
+      {hasNextPage && (
+        <button
+          onClick={goToNextPage}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-black/70 hover:bg-black/90 text-white p-2 rounded-full transition-opacity"
+        >
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      )}
 
     </div>
   );

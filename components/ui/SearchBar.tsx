@@ -5,10 +5,11 @@ import { useState } from 'react';
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
+  onQueryChange?: (query: string) => void;
   placeholder?: string;
 }
 
-export function SearchBar({ onSearch, placeholder = "Search articles..." }: SearchBarProps) {
+export function SearchBar({ onSearch, onQueryChange, placeholder = "Search articles..." }: SearchBarProps) {
   const [query, setQuery] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,7 +24,10 @@ export function SearchBar({ onSearch, placeholder = "Search articles..." }: Sear
         <input
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            onQueryChange?.(e.target.value);
+          }}
           placeholder={placeholder}
           className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
         />

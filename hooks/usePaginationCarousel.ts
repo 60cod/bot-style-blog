@@ -45,6 +45,8 @@ export function usePaginationCarousel<T>(items: T[], itemsPerPage: number = 3) {
     goToPrevPage,
     goToPage,
     hasItems: items.length > 0,
-    canNavigate: totalPages > 1
+    canNavigate: totalPages > 1,
+    hasPrevPage: currentPage > 0,
+    hasNextPage: currentPage < totalPages - 1
   };
 }
