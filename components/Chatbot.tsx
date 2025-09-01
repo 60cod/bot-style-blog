@@ -91,7 +91,7 @@ export default function Chatbot() {
                   </div>
                 ) : (
                   <div
-                    className={`max-w-[80%] rounded-lg px-4 py-3 ${
+                    className={`max-w-[80%] rounded-2xl rounded-br-none px-4 py-3 ${
                       message.isBot
                         ? "bg-gray-100 text-gray-900"
                         : "text-white"

@@ -1,10 +1,18 @@
 import { Message, NavigationSection } from '@/types';
 
 export function createUserMessage(content: string): Message {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+  
   return {
     id: Date.now().toString(),
     content,
-    isBot: false
+    isBot: false,
+    timestamp: timeString
   };
 }
 

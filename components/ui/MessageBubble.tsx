@@ -12,7 +12,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     if (message.selectedSection === 'Articles') {
       return (
         <div 
-          className="w-full bg-white rounded-lg overflow-y-auto"
+          className="w-full bg-white rounded-2xl rounded-bl-none overflow-y-auto"
           style={{ height: '810px' }}
         >
           <ArticlesPage />
@@ -23,7 +23,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
     // 다른 섹션들은 기본 로딩 화면
     return (
       <div 
-        className="w-full bg-gray-100 rounded-lg p-4 flex items-center justify-center overflow-y-auto"
+        className="w-full bg-gray-100 rounded-2xl rounded-bl-none p-4 flex items-center justify-center overflow-y-auto"
         style={{ height: '810px' }}
       >
         <div className="text-center">
@@ -37,20 +37,27 @@ export function MessageBubble({ message }: MessageBubbleProps) {
   }
 
   return (
-    <div className="flex items-end gap-2 max-w-[80%]">
-      <div
-        className={`rounded-lg px-4 py-3 text-sm ${
-          message.isBot ? "bg-gray-100 text-gray-900" : "text-white"
-        }`}
-        style={!message.isBot ? { backgroundColor: BRAND_COLORS.primary } : {}}
-      >
-        <p>{message.content}</p>
-      </div>
+    <div
+      className={`flex items-end gap-2 max-w-[80%] ${
+        message.isBot ? "flex-row-reverse" : ""
+      }`}
+    >
       {message.timestamp && (
         <span className="text-xs text-gray-400 whitespace-nowrap">
           {message.timestamp}
         </span>
       )}
+
+      <div
+        className={`rounded-2xl px-4 py-3 text-sm ${
+          message.isBot
+            ? "rounded-bl-none bg-gray-100 text-gray-900"
+            : "rounded-br-none text-white"
+        }`}
+        style={!message.isBot ? { backgroundColor: BRAND_COLORS.primary } : {}}
+      >
+        <p>{message.content}</p>
+      </div>
     </div>
   );
 }
