@@ -18,13 +18,11 @@ export default function Chatbot() {
     handleBackToHome
   } = useChatbot();
 
-  const containerSize = isExpanded 
-    ? `${CHATBOT_DIMENSIONS.expanded.width} ${CHATBOT_DIMENSIONS.expanded.height}`
-    : `${CHATBOT_DIMENSIONS.collapsed.width} ${CHATBOT_DIMENSIONS.collapsed.height}`;
-
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 p-4">
-      <div className={`flex flex-col shadow-lg border border-gray-200 transition-all duration-500 ease-in-out rounded-lg bg-white ${containerSize}`}>
+      <div className={`flex flex-col shadow-lg border border-gray-200 transition-all duration-500 ease-in-out rounded-lg bg-white ${
+        isExpanded ? "w-[1000px] h-[1200px]" : "w-[600px] h-[900px]"
+      }`}>
         
         {/* Header */}
         <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-gray-50">
