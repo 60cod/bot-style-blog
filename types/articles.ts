@@ -4,10 +4,8 @@ export interface Article {
   summary: string;
   category: ArticleCategory;
   publishedAt: string;
-  readTime: number;
   tags: string[];
   thumbnail: string;
-  author: string;
 }
 
 export type ArticleCategory = 

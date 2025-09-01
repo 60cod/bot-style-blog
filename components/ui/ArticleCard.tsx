@@ -1,5 +1,5 @@
 import { Article } from '@/types/articles';
-import { Clock } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 
 interface ArticleCardProps {
   article: Article;
@@ -38,12 +38,9 @@ export function ArticleCard({ article, onSelect }: ArticleCardProps) {
             {article.summary}
           </p>
 
-          <div className="flex items-center justify-between text-xs text-gray-500">
-            <div className="flex items-center gap-1">
-              <Clock className="h-3 w-3" />
-              <span>{article.readTime}min read</span>
-            </div>
-            <span>{article.author}</span>
+          <div className="flex items-center gap-1 text-xs text-gray-500">
+            <Calendar className="h-3 w-3" />
+            <span>{new Date(article.publishedAt).toLocaleDateString('en-US')}</span>
           </div>
 
           {/* Tags */}
