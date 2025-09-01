@@ -16,6 +16,9 @@ export function ChatInput() {
           <Send className="h-4 w-4" />
         </button>
       </div>
+      <div className="text-center mt-3 text-xs text-gray-400">
+          Created by zz6cod@gmail.com
+      </div>
     </div>
   );
 }

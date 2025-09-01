@@ -17,7 +17,10 @@ export function Avatar({ initials, name, status }: AvatarProps) {
       </div>
       <div>
         <h2 className="font-medium">{name}</h2>
-        <p className="text-gray-600 text-sm">{status}</p>
+        <p className="text-gray-600 text-sm">
+          <span style={{color: '#00e9ff'}}>• </span>
+          {status}
+        </p>
       </div>
     </div>
   );

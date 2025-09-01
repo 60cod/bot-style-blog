@@ -62,7 +62,10 @@ export default function Chatbot() {
           </div>
           <div>
             <h2 className="font-medium">Yugyeong Na</h2>
-            <p className="text-gray-600 text-sm">Online</p>
+            <p className="text-gray-600 text-sm">
+              <span style={{color: '#00e9ff'}}>• </span>
+              Online
+            </p>
           </div>
         </div>
 
