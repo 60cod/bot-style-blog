@@ -19,9 +19,15 @@ export function createLoadingMessage(section: NavigationSection): Message {
 }
 
 export function createInitialMessage(): Message {
+  const now = new Date();
+  const timeString = now.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
   return {
     id: '1',
-    content: "Hello, I'm Yugyeong Na. What would you like to explore?",
+    content: `Hello, I'm Yugyeong Na. What would you like to explore?\n\n<span class="text-xs text-gray-400">${timeString}</span>`,
     isBot: true
   };
 }

@@ -7,12 +7,6 @@ export const NAVIGATION_SECTIONS: NavigationSection[] = [
   'Contact'
 ];
 
-export const INITIAL_MESSAGE = {
-  id: '1',
-  content: "Hello, I'm Yugyeong Na. What would you like to explore?",
-  isBot: true
-};
-
 export const CHATBOT_DIMENSIONS = {
   collapsed: { width: 'w-[600px]', height: 'h-[900px]' },
   expanded: { width: 'w-[1000px]', height: 'h-[1200px]' }

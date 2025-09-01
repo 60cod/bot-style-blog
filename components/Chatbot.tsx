@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Send } from 'lucide-react';
+import { createInitialMessage } from '@/lib/message-utils';
 
 interface Message {
   id: string;
@@ -13,13 +14,7 @@ interface Message {
 }
 
 export default function Chatbot() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: "1",
-      content: "Hello, I'm Yugyeong Na. What would you like to explore?",
-      isBot: true
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([createInitialMessage()]);
   const [showInitialButtons, setShowInitialButtons] = useState(true);
   const [inputValue, setInputValue] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -52,13 +47,7 @@ export default function Chatbot() {
     // Reset to initial state
     setIsExpanded(false);
     setShowInitialButtons(true);
-    setMessages([
-      {
-        id: "1",
-        content: "Hello, I'm Yugyeong Na. What would you like to explore?",
-        isBot: true
-      }
-    ]);
+    setMessages([createInitialMessage()]);
   };
 
   return (
@@ -103,7 +92,7 @@ export default function Chatbot() {
                     }`}
                     style={!message.isBot ? {backgroundColor: '#030213'} : {}}
                   >
-                    <p>{message.content}</p>
+                    <div dangerouslySetInnerHTML={{ __html: message.content }} />
                   </div>
                 )}
               </div>

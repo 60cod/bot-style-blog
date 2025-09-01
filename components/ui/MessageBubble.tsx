@@ -37,7 +37,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
       }`}
       style={!message.isBot ? { backgroundColor: BRAND_COLORS.primary } : {}}
     >
-      <p>{message.content}</p>
+      <div dangerouslySetInnerHTML={{ __html: message.content }} />
     </div>
   );
 }
