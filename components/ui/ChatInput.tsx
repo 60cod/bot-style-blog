@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Send } from 'lucide-react';
 
 interface ChatInputProps {
@@ -9,6 +9,14 @@ interface ChatInputProps {
 
 export function ChatInput({ isEnabled, placeholder = "Click the button...", onSendMessage }: ChatInputProps) {
   const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-focus when input becomes enabled
+  useEffect(() => {
+    if (isEnabled && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEnabled]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,6 +38,7 @@ export function ChatInput({ isEnabled, placeholder = "Click the button...", onSe
       <form onSubmit={handleSubmit}>
         <div className="flex gap-2">
           <input
+            ref={inputRef}
             disabled={!isEnabled}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}

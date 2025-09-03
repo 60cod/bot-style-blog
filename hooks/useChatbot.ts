@@ -51,74 +51,95 @@ export function useChatbot(): ChatbotState & {
   }, []);
 
   const handleSectionClick = useCallback((section: NavigationSection) => {
+    setShowInitialButtons(false);
+    
     if (section === 'Contact') {
-      // Contact workflow - don't expand, but enable input
-      setShowInitialButtons(false);
-      setIsInputEnabled(true);
+      // Contact workflow - don't expand, but enable input after delay
       setContactStep('email');
 
       const userMessage = createUserMessageCustom(section);
-      const botMessage = createBotMessage(
-        "Please enter your email address to get started:",
-        ['Return']
-      );
+      setMessages(prev => [...prev, userMessage]);
 
-      setMessages(prev => [...prev, userMessage, botMessage]);
+      // Bot response with delay
+      setTimeout(() => {
+        const botMessage = createBotMessage(
+          "Please enter your email address to get started.",
+          ['Return']
+        );
+        setMessages(prev => [...prev, botMessage]);
+        setIsInputEnabled(true);
+      }, 600);
     } else {
       // Other sections - expand as usual
-      setShowInitialButtons(false);
       setIsExpanded(true);
 
       const userMessage = createUserMessage(section);
-      const loadingMessage = createLoadingMessage(section);
+      setMessages(prev => [...prev, userMessage]);
 
-      setMessages(prev => [...prev, userMessage, loadingMessage]);
+      // Loading message with delay
+      setTimeout(() => {
+        const loadingMessage = createLoadingMessage(section);
+        setMessages(prev => [...prev, loadingMessage]);
+      }, 400);
     }
-  }, [createUserMessageCustom, createBotMessage]);
+  }, [createUserMessageCustom, createBotMessage, createUserMessage, createLoadingMessage]);
 
   const handleSendMessage = useCallback((message: string) => {
-    const userMessage = createUserMessageCustom(message);
-    setMessages(prev => [...prev, userMessage]);
+    // Temporarily disable input to prevent rapid sending
+    setIsInputEnabled(false);
+    
+    // Add user message with slight delay
+    setTimeout(() => {
+      const userMessage = createUserMessageCustom(message);
+      setMessages(prev => [...prev, userMessage]);
+      
+      // Add bot response with additional delay
+      setTimeout(() => {
+        if (contactStep === 'email') {
+          if (isValidEmail(message)) {
+            const normalizedEmail = normalizeEmail(message);
+            setContactData(prev => ({ ...prev, email: normalizedEmail }));
+            setContactStep('message');
 
-    if (contactStep === 'email') {
-      if (isValidEmail(message)) {
-        const normalizedEmail = normalizeEmail(message);
-        setContactData(prev => ({ ...prev, email: normalizedEmail }));
-        setContactStep('message');
+            const botMessage = createBotMessage(
+              "Great! Now please enter your message.",
+              ['Return']
+            );
+            setMessages(prev => [...prev, botMessage]);
+            setIsInputEnabled(true);
+          } else {
+            const botMessage = createBotMessage(
+              "⚠️ Please enter a valid email address.",
+              ['Return']
+            );
+            setMessages(prev => [...prev, botMessage]);
+            setIsInputEnabled(true);
+          }
+        } else if (contactStep === 'message') {
+          setContactData(prev => ({ ...prev, message }));
+          setContactStep('confirmation');
+          // Keep input disabled for confirmation step
 
-        const botMessage = createBotMessage(
-          "Great! Now please enter your message:",
-          ['Return']
-        );
-        setMessages(prev => [...prev, botMessage]);
-      } else {
-        const botMessage = createBotMessage(
-          "Please enter a valid email address:",
-          ['Return']
-        );
-        setMessages(prev => [...prev, botMessage]);
-      }
-    } else if (contactStep === 'message') {
-      setContactData(prev => ({ ...prev, message }));
-      setContactStep('confirmation');
-      setIsInputEnabled(false);
-
-      const botMessage = createBotMessage(
-        `Would you like to send this message from ${contactData.email}?\n\nMessage: "${message}"`
-      );
-      setMessages(prev => [...prev, botMessage]);
-    }
+          const botMessage = createBotMessage(
+            `Would you like to send this message from ${contactData.email}?\n\nMessage: "${message}"`
+          );
+          setMessages(prev => [...prev, botMessage]);
+        }
+      }, 800); // Bot response delay
+    }, 200); // User message delay
   }, [contactStep, contactData.email, createUserMessageCustom, createBotMessage]);
 
   const handleConfirmSend = useCallback(() => {
     // TODO: Implement actual email sending
-    const botMessage = createBotMessage(
-      "Thank you! Your message has been sent successfully. I'll get back to you soon!",
-      ['Return']
-    );
-    setMessages(prev => [...prev, botMessage]);
-    setContactStep(null);
-    setIsInputEnabled(false);
+    setTimeout(() => {
+      const botMessage = createBotMessage(
+        "✅ Thank you! Your message has been sent successfully. I'll get back to you soon!",
+        ['Return']
+      );
+      setMessages(prev => [...prev, botMessage]);
+      setContactStep(null);
+      setIsInputEnabled(false);
+    }, 500);
   }, [createBotMessage]);
 
   const handleCancelSend = useCallback(() => {
