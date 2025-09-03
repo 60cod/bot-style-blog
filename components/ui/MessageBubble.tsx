@@ -1,12 +1,14 @@
 import { Message } from '@/types';
 import { BRAND_COLORS } from '@/constants';
 import { ArticlesPage } from '../ArticlesPage';
+import { NavigationButton } from './NavigationButton';
 
 interface MessageBubbleProps {
   message: Message;
+  onReturnClick?: () => void;
 }
 
-export function MessageBubble({ message }: MessageBubbleProps) {
+export function MessageBubble({ message, onReturnClick }: MessageBubbleProps) {
   if (message.isFullWidth) {
     // Articles 섹션인 경우 실제 페이지 렌더링
     if (message.selectedSection === 'Articles') {
@@ -37,27 +39,39 @@ export function MessageBubble({ message }: MessageBubbleProps) {
   }
 
   return (
-    <div
-      className={`flex items-end gap-2 max-w-[80%] ${
-        message.isBot ? "flex-row-reverse" : ""
-      }`}
-    >
-      {message.timestamp && (
-        <span className="text-xs text-gray-400 whitespace-nowrap">
-          {message.timestamp}
-        </span>
-      )}
-
+    <div className="max-w-[80%]">
+      {/* Message bubble with timestamp */}
       <div
-        className={`rounded-2xl px-4 py-3 text-sm ${
-          message.isBot
-            ? "rounded-bl-none bg-gray-100 text-gray-900"
-            : "rounded-br-none text-white"
+        className={`flex items-end gap-2 ${
+          message.isBot ? "flex-row-reverse" : ""
         }`}
-        style={!message.isBot ? { backgroundColor: BRAND_COLORS.primary } : {}}
       >
-        <p>{message.content}</p>
+        {message.timestamp && (
+          <span className="text-xs text-gray-400 whitespace-nowrap">
+            {message.timestamp}
+          </span>
+        )}
+
+        <div
+          className={`rounded-2xl px-4 py-3 text-sm ${
+            message.isBot
+              ? "rounded-bl-none bg-gray-100 text-gray-900"
+              : "rounded-br-none text-white"
+          }`}
+          style={!message.isBot ? { backgroundColor: BRAND_COLORS.primary } : {}}
+        >
+          <p className="whitespace-pre-wrap">{message.content}</p>
+        </div>
       </div>
+
+      {/* Return Button for bot messages */}
+      {message.isBot && message.buttons?.includes('Return') && onReturnClick && (
+        <div className="flex justify-start mt-2">
+          <NavigationButton onClick={onReturnClick}>
+            Return
+          </NavigationButton>
+        </div>
+      )}
     </div>
   );
 }

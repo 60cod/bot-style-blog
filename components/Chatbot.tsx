@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef, useEffect } from 'react';
 import { Message } from '@/types';
 import { CHATBOT_DIMENSIONS } from '@/constants';
 import { useChatbot } from '@/hooks/useChatbot';
@@ -8,15 +9,30 @@ import { MessageBubble } from './ui/MessageBubble';
 import { NavigationButtons } from './ui/NavigationButtons';
 import { NavigationButton } from './ui/NavigationButton';
 import { ChatInput } from './ui/ChatInput';
+import { ConfirmationButtons } from './ui/ConfirmationButtons';
 
 export default function Chatbot() {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
   const {
     messages,
     showInitialButtons,
     isExpanded,
+    isInputEnabled,
+    contactStep,
     handleSectionClick,
-    handleBackToHome
+    handleBackToHome,
+    handleSendMessage,
+    handleConfirmSend,
+    handleCancelSend
   } = useChatbot();
+
+  // Auto-scroll to bottom when new messages arrive
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 p-4">
@@ -34,14 +50,17 @@ export default function Chatbot() {
         </div>
 
         {/* Messages Area */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 overflow-auto" ref={messagesEndRef}>
           <div className="space-y-4">
             {messages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.isBot ? "justify-start" : "justify-end"}`}
               >
-                <MessageBubble message={message} />
+                <MessageBubble 
+                  message={message} 
+                  onReturnClick={handleBackToHome}
+                />
               </div>
             ))}
           </div>
@@ -51,18 +70,36 @@ export default function Chatbot() {
             <NavigationButtons onSectionClick={handleSectionClick} />
           )}
 
-          {/* Return Button */}
-          {isExpanded && !showInitialButtons && (
+          {/* Return Button for expanded sections (not Contact) */}
+          {isExpanded && !showInitialButtons && contactStep === null && (
             <div className="flex justify-left mt-3">
               <NavigationButton onClick={handleBackToHome}>
                 Return
               </NavigationButton>
             </div>
           )}
+
+          {/* Confirmation Buttons for Contact workflow */}
+          {contactStep === 'confirmation' && (
+            <div className="flex justify-start mt-3">
+              <ConfirmationButtons 
+                onConfirm={handleConfirmSend}
+                onCancel={handleCancelSend}
+              />
+            </div>
+          )}
         </div>
 
         {/* Input Area */}
-        <ChatInput />
+        <ChatInput 
+          isEnabled={isInputEnabled}
+          placeholder={
+            contactStep === 'email' ? "Enter your email address..." :
+            contactStep === 'message' ? "Enter your message..." :
+            "Click the button..."
+          }
+          onSendMessage={handleSendMessage}
+        />
       </div>
     </div>
   );
