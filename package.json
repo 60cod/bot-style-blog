@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:notion": "node scripts/test-notion.js"
   },
   "dependencies": {
     "lucide-react": "^0.263.1",

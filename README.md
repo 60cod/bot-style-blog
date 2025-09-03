@@ -45,17 +45,54 @@ Ready for expansion with individual pages for:
 
 ## Getting Started
 
+### Prerequisites
+
+1. Node.js (v18 or later)
+2. Notion API Token and Database ID
+
+### Setup
+
 1. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Run development server:
+2. Configure Notion integration:
+   - Copy `.env.example` to `.env.local`
+   - Add your Notion API token:
+   ```bash
+   NOTION_TOKEN=your_notion_integration_token
+   ```
+
+3. Test Notion connection:
+```bash
+npm run test:notion
+```
+
+4. Run development server:
 ```bash
 npm run dev
 ```
 
-3. Open [http://localhost:3000](http://localhost:3000)
+5. Open [http://localhost:3000](http://localhost:3000)
+
+### Notion Database Setup
+
+Your Notion database should have the following properties:
+- `article_title` (Title) - Article title
+- `article_category` (Select) - Article category
+- `article_tags` (Multi-select) - Article tags
+- `article_date` (Date) - Publication date
+- `article_excerpt` (Rich Text) - Article summary
+- `cover` (File) - Article thumbnail image
+
+The integration maps these Notion fields to the following article properties:
+- `article_title` → `title`
+- `article_category` → `category`
+- `article_tags` → `tags`
+- `article_date` → `publishedAt`
+- `article_excerpt` → `summary`
+- `cover` → `thumbnail`
 
 ## Color Scheme
 

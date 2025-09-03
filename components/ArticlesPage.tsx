@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Article, ArticleCategory } from '@/types/articles';
-import { getArticlesByCategory, getAllCategories } from '@/lib/mock-articles';
+import { getArticlesByCategory, getAllCategories } from '@/lib/articles-api';
 import { SearchBar } from './ui/SearchBar';
 import { CategoryFilter } from './ui/CategoryFilter';
 import { PaginationCarousel } from './ui/PaginationCarousel';
@@ -11,9 +11,32 @@ export function ArticlesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentInput, setCurrentInput] = useState(''); // 현재 검색바 입력값
   const [selectedCategories, setSelectedCategories] = useState<ArticleCategory[]>([]);
-  
-  const allCategories = getAllCategories();
-  const articlesByCategory = getArticlesByCategory();
+  const [articlesByCategory, setArticlesByCategory] = useState<Record<ArticleCategory, Article[]>>({} as Record<ArticleCategory, Article[]>);
+  const [allCategories, setAllCategories] = useState<ArticleCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadArticles() {
+      try {
+        setLoading(true);
+        setError(null);
+        const [categorizedArticles, categories] = await Promise.all([
+          getArticlesByCategory(),
+          getAllCategories()
+        ]);
+        setArticlesByCategory(categorizedArticles);
+        setAllCategories(categories);
+      } catch (err) {
+        console.error('Failed to load articles:', err);
+        setError(err instanceof Error ? err.message : 'Failed to load articles');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadArticles();
+  }, []);
 
   // 필터링 로직
   const filteredCategories = useMemo(() => {
@@ -74,7 +97,22 @@ export function ArticlesPage() {
 
         {/* Articles by Category */}
         <div className="space-y-8">
-          {filteredCategories.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+              <p className="text-gray-500 mt-4">Loading articles...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-500 mb-4">{error}</p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              >
+                Try Again
+              </button>
+            </div>
+          ) : filteredCategories.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-500">No articles found matching your criteria.</p>
             </div>
