@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react';
 import { Message, NavigationSection, ChatbotState, ContactStep, AboutStep, ContactData } from '@/types';
 import { createUserMessage, createLoadingMessage, createInitialMessage } from '@/lib/message-utils';
-import { BotMessageFactory, UserMessageFactory } from '@/lib/message-factories';
+import { BotMessageFactory } from '@/lib/message-factories/BotMessageFactory';
+import { UserMessageFactory } from '@/lib/message-factories/UserMessageFactory';
 import { isValidEmail, normalizeEmail } from '@/lib/email-utils';
 
 export function useChatbot(): ChatbotState & {

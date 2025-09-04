@@ -36,7 +36,6 @@ export function ProjectsPage() {
   }, []);
 
   const handleProjectSelect = (project: Project) => {
-    console.log('Selected project:', project);
     // Future: Navigate to project detail page
   };
 

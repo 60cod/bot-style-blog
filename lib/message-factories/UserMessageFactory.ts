@@ -1,25 +1,23 @@
-import { UserMessage } from '@/types';
+import { Message } from '@/types';
 
 export class UserMessageFactory {
   private static generateId(): string {
     return Date.now().toString();
   }
 
-  private static generateTimestamp(): string {
-    const now = new Date();
-    return now.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
+  private static getTimestamp(): string {
+    return new Date().toLocaleTimeString('en-US', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
     });
   }
 
-  static createMessage(content: string): UserMessage {
+  static createMessage(content: string): Message {
     return {
       id: this.generateId(),
       content,
       isBot: false,
-      timestamp: this.generateTimestamp()
+      timestamp: this.getTimestamp()
     };
   }
 }

@@ -1,5 +1,6 @@
 import { Message, NavigationSection } from '@/types';
-import { BotMessageFactory, UserMessageFactory } from './message-factories';
+import { BotMessageFactory } from './message-factories/BotMessageFactory';
+import { UserMessageFactory } from './message-factories/UserMessageFactory';
 
 // Legacy wrapper functions for backward compatibility
 export function createUserMessage(content: string): Message {

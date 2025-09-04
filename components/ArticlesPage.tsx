@@ -70,7 +70,6 @@ export function ArticlesPage() {
   };
 
   const handleArticleSelect = (article: Article) => {
-    console.log('Selected article:', article);
     // 향후 아티클 상세 페이지로 이동하는 로직 추가
   };
 
