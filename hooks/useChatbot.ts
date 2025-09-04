@@ -16,6 +16,7 @@ export function useChatbot(): ChatbotState & {
   const [isInputEnabled, setIsInputEnabled] = useState(false);
   const [contactStep, setContactStep] = useState<ContactStep | null>(null);
   const [contactData, setContactData] = useState<ContactData>({ email: '', message: '' });
+  const [isEmailSending, setIsEmailSending] = useState(false);
 
   const createBotMessage = useCallback((content: string, buttons?: string[]): Message => {
     const now = new Date();
@@ -130,6 +131,7 @@ export function useChatbot(): ChatbotState & {
   }, [contactStep, contactData.email, createUserMessageCustom, createBotMessage]);
 
   const handleConfirmSend = useCallback(async () => {
+    setIsEmailSending(true);
     try {
       // Send email via API
       const response = await fetch('/api/send-email', {
@@ -161,6 +163,7 @@ export function useChatbot(): ChatbotState & {
         }
         setContactStep(null);
         setIsInputEnabled(false);
+        setIsEmailSending(false);
       }, 500);
     } catch (error) {
       console.error('Failed to send email:', error);
@@ -172,6 +175,7 @@ export function useChatbot(): ChatbotState & {
         setMessages(prev => [...prev, botMessage]);
         setContactStep(null);
         setIsInputEnabled(false);
+        setIsEmailSending(false);
       }, 500);
     }
   }, [contactData, createBotMessage]);
@@ -196,6 +200,7 @@ export function useChatbot(): ChatbotState & {
     isInputEnabled,
     contactStep,
     contactData,
+    isEmailSending,
     handleSectionClick,
     handleBackToHome,
     handleSendMessage,

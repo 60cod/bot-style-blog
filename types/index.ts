@@ -24,4 +24,5 @@ export interface ChatbotState {
   isInputEnabled: boolean;
   contactStep: ContactStep | null;
   contactData: ContactData;
+  isEmailSending: boolean;
 }

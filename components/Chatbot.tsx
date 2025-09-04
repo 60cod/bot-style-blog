@@ -20,6 +20,7 @@ export default function Chatbot() {
     isExpanded,
     isInputEnabled,
     contactStep,
+    isEmailSending,
     handleSectionClick,
     handleBackToHome,
     handleSendMessage,
@@ -85,6 +86,7 @@ export default function Chatbot() {
               <ConfirmationButtons 
                 onConfirm={handleConfirmSend}
                 onCancel={handleCancelSend}
+                disabled={isEmailSending}
               />
             </div>
           )}
