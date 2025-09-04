@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import { Message } from '@/types';
 import { CHATBOT_DIMENSIONS } from '@/constants';
 import { useChatbot } from '@/hooks/useChatbot';
+import { useGitHubProfile } from '@/hooks/useGitHubProfile';
 import { Avatar } from './ui/Avatar';
 import { MessageBubble } from './ui/MessageBubble';
 import { NavigationButtons } from './ui/NavigationButtons';
@@ -30,6 +31,8 @@ export default function Chatbot() {
     handleCancelSend
   } = useChatbot();
 
+  const { avatarUrl, name, isLoading } = useGitHubProfile();
+
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -46,9 +49,11 @@ export default function Chatbot() {
         {/* Header */}
         <div className="flex items-center gap-3 p-4 border-b border-gray-200 bg-gray-50">
           <Avatar 
+            avatarUrl={avatarUrl}
             initials="YN" 
-            name="Yugyeong Na" 
-            status="Online" 
+            name={name || "Yugyeong Na"} 
+            status="Online"
+            isLoading={isLoading}
           />
         </div>
 
