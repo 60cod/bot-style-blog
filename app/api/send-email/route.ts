@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     // Send email using Resend
     const data = await resend.emails.send({
-      from: 'Contact Form <noreply@ygna.blog>',
+      from: 'Message from ygna.blog <noreply@ygna.blog>',
       to: ['zz6cod@gmail.com'],
       replyTo: email, // User can reply directly to the sender
       subject: 'New Contact Form Submission',
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
           
           <div style="color: #666; font-size: 12px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 15px;">
             <p>This email was sent from your blog contact form.</p>
-            <p>Timestamp: ${new Date().toLocaleString()}</p>
+            <p>Timestamp: ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
           </div>
         </div>
       `,
