@@ -10,7 +10,7 @@ export interface BotMessage extends BaseMessage {
   isBot: true;
   buttons?: string[];
   isFullWidth?: boolean;
-  selectedSection?: string;
+  selectedSection?: NavigationSection;
 }
 
 // User-specific message interface
