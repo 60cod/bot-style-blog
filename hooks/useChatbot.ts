@@ -146,7 +146,7 @@ export function useChatbot(): ChatbotState & {
       setTimeout(() => {
         if (response.ok) {
           const botMessage = createBotMessage(
-            "Thank you! Your message has been sent successfully. I'll get back to you soon!",
+            "✅ Thank you! Your message has been sent successfully. I'll get back to you soon!",
             ['Return']
           );
           setMessages(prev => [...prev, botMessage]);

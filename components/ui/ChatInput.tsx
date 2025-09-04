@@ -9,7 +9,7 @@ interface ChatInputProps {
 
 export function ChatInput({ isEnabled, placeholder = "Click the button...", onSendMessage }: ChatInputProps) {
   const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
   // Auto-focus when input becomes enabled
   useEffect(() => {
@@ -37,16 +37,18 @@ export function ChatInput({ isEnabled, placeholder = "Click the button...", onSe
     <div className="p-4 border-t border-gray-200 bg-gray-50">
       <form onSubmit={handleSubmit}>
         <div className="flex gap-2">
-          <input
+          <textarea
             ref={inputRef}
             disabled={!isEnabled}
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={isEnabled ? placeholder : "Click the button..."}
-            className={`flex-1 text-sm bg-white border border-gray-300 rounded-md px-3 py-2 ${
+            rows={1}
+            className={`flex-1 text-sm bg-white border border-gray-300 rounded-md px-3 py-2 resize-none ${
               isEnabled ? 'text-gray-900' : 'text-gray-400'
             }`}
+            style={{ minHeight: '40px' }}
           />
           <button 
             type="submit"
