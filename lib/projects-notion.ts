@@ -125,6 +125,7 @@ export class ProjectsNotionService {
     try {
       const response = await fetch(url, {
         ...options,
+        next: { revalidate: 900 }, // 15분 캐싱
         headers: {
           'Authorization': `Bearer ${this.token}`,
           'Content-Type': 'application/json',

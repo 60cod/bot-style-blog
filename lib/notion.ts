@@ -80,6 +80,7 @@ export class NotionService {
     try {
       const response = await fetch(url, {
         ...options,
+        next: { revalidate: 600 }, // 10분 캐싱
         headers: {
           'Authorization': `Bearer ${this.token}`,
           'Content-Type': 'application/json',
