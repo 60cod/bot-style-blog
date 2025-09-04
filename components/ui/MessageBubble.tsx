@@ -1,6 +1,7 @@
 import { Message } from '@/types';
 import { BRAND_COLORS } from '@/constants';
 import { ArticlesPage } from '../ArticlesPage';
+import { ProjectsPage } from '../ProjectsPage';
 import { NavigationButton } from './NavigationButton';
 
 interface MessageBubbleProps {
@@ -24,7 +25,19 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
       );
     }
 
-    // 다른 섹션들은 기본 로딩 화면
+    // Projects 섹션인 경우 실제 페이지 렌더링
+    if (message.selectedSection === 'Projects') {
+      return (
+        <div 
+          className="w-full bg-white rounded-2xl rounded-bl-none overflow-y-auto"
+          style={{ height: '810px' }}
+        >
+          <ProjectsPage />
+        </div>
+      );
+    }
+
+    // 기본 로딩 화면
     return (
       <div 
         className="w-full bg-gray-100 rounded-2xl rounded-bl-none p-4 flex items-center justify-center overflow-y-auto"
