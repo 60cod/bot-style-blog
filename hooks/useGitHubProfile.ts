@@ -36,8 +36,8 @@ interface ProfileCache {
 
 export function useGitHubProfile(): UseGitHubProfileReturn {
   const [avatarUrl, setAvatarUrl] = useState('');
-  const [name, setName] = useState(FALLBACK_VALUES.name);
-  const [bio, setBio] = useState(FALLBACK_VALUES.bio);
+  const [name, setName] = useState<string>(FALLBACK_VALUES.name);
+  const [bio, setBio] = useState<string>(FALLBACK_VALUES.bio);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
