@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getNotionService } from '@/lib/notion';
+import { getNotionService } from '@/lib/articles-notion';
 
 export async function GET() {
   try {
