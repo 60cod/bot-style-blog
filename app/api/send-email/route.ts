@@ -45,8 +45,8 @@ export async function POST(request: Request) {
           </div>
           
           <div style="color: #666; font-size: 12px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 15px;">
-            <p>This email was sent from your blog contact form.</p>
-            <p>Timestamp: ${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
+            <p>This email was sent from Yugyeong Na Blog.</p>
+            <p>${new Date().toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
           </div>
         </div>
       `,

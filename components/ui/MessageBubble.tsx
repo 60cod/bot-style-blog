@@ -61,6 +61,13 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
           message.isBot ? "justify-start" : ""
         }`}
       >
+        {/* Timestamp on the left for user messages */}
+        {!message.isBot && message.timestamp && (
+            <span className="text-xs text-gray-400 whitespace-nowrap">
+              {message.timestamp}
+            </span>
+        )}
+
         <div
           className={`rounded-2xl px-4 py-3 text-sm ${
             message.isBot
@@ -72,10 +79,11 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
           <p className="whitespace-pre-wrap">{message.content}</p>
         </div>
 
-        {message.timestamp && (
+        {/* Timestamp on the right for bot messages */}
+        {message.isBot && message.timestamp && (
             <span className="text-xs text-gray-400 whitespace-nowrap">
-            {message.timestamp}
-          </span>
+              {message.timestamp}
+            </span>
         )}
       </div>
 
