@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
-import { getAllProjects } from '@/lib/projects-api';
+import { getProjectsNotionService } from '@/lib/projects-notion';
 
 export async function GET() {
   try {
-    const projects = await getAllProjects();
+    const projectsService = getProjectsNotionService();
+    const projects = await projectsService.getAllProjects();
     
     return NextResponse.json({
       success: true,

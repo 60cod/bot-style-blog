@@ -49,7 +49,7 @@ interface NotionResponse {
   has_more: boolean;
 }
 
-const NOTION_DATABASE_ID = '263e8f191da280e189b0cb74f37d38a7';
+const ARTICLES_DATABASE_ID = process.env.ARTICLES_DATABASE_ID;
 const NOTION_API_VERSION = '2022-06-28';
 
 class NotionError extends Error {
@@ -67,6 +67,9 @@ export class NotionService {
     const token = process.env.NOTION_TOKEN;
     if (!token) {
       throw new NotionError('NOTION_TOKEN environment variable is required');
+    }
+    if (!ARTICLES_DATABASE_ID) {
+      throw new NotionError('ARTICLES_DATABASE_ID environment variable is required');
     }
     this.token = token;
   }
@@ -159,7 +162,7 @@ export class NotionService {
 
   async getArticles(): Promise<Article[]> {
     try {
-      const response = await this.makeRequest<NotionResponse>(`/databases/${NOTION_DATABASE_ID}/query`, {
+      const response = await this.makeRequest<NotionResponse>(`/databases/${ARTICLES_DATABASE_ID}/query`, {
         method: 'POST',
         body: JSON.stringify({}),
       });
