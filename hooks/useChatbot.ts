@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Message, NavigationSection, ChatbotState, ContactStep, AboutStep, ContactData } from '@/types';
 import { createUserMessage, createLoadingMessage, createInitialMessage } from '@/lib/message-utils';
+import { BotMessageFactory, UserMessageFactory } from '@/lib/message-factories';
 import { isValidEmail, normalizeEmail } from '@/lib/email-utils';
 
 export function useChatbot(): ChatbotState & {
@@ -20,38 +21,7 @@ export function useChatbot(): ChatbotState & {
   const [contactData, setContactData] = useState<ContactData>({ email: '', message: '' });
   const [isEmailSending, setIsEmailSending] = useState(false);
 
-  const createBotMessage = useCallback((content: string, buttons?: string[]): Message => {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-    
-    return {
-      id: Date.now().toString(),
-      content,
-      isBot: true,
-      buttons,
-      timestamp: timeString
-    };
-  }, []);
-
-  const createUserMessageCustom = useCallback((content: string): Message => {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    });
-    
-    return {
-      id: Date.now().toString(),
-      content,
-      isBot: false,
-      timestamp: timeString
-    };
-  }, []);
+  // Use factory methods for message creation
 
   const handleSectionClick = useCallback((section: NavigationSection) => {
     setShowInitialButtons(false);
@@ -60,15 +30,12 @@ export function useChatbot(): ChatbotState & {
       // Contact workflow - don't expand, but enable input after delay
       setContactStep('email');
 
-      const userMessage = createUserMessageCustom(section);
+      const userMessage = UserMessageFactory.createMessage(section);
       setMessages(prev => [...prev, userMessage]);
 
       // Bot response with delay
       setTimeout(() => {
-        const botMessage = createBotMessage(
-          "Please enter your email address to get started.",
-          ['Return']
-        );
+        const botMessage = BotMessageFactory.createContactEmailPrompt();
         setMessages(prev => [...prev, botMessage]);
         setIsInputEnabled(true);
       }, 600);
@@ -76,15 +43,12 @@ export function useChatbot(): ChatbotState & {
       // About workflow - don't expand, show navigation buttons
       setAboutStep('initial');
 
-      const userMessage = createUserMessageCustom(section);
+      const userMessage = UserMessageFactory.createMessage(section);
       setMessages(prev => [...prev, userMessage]);
 
       // Bot response with about navigation buttons
       setTimeout(() => {
-        const botMessage = createBotMessage(
-          "What would you like to know about me?",
-          ['Experience', 'Education', 'Technical Skills', 'Social']
-        );
+        const botMessage = BotMessageFactory.createAboutPrompt();
         setMessages(prev => [...prev, botMessage]);
       }, 600);
     } else {
@@ -100,7 +64,7 @@ export function useChatbot(): ChatbotState & {
         setMessages(prev => [...prev, loadingMessage]);
       }, 400);
     }
-  }, [createUserMessageCustom, createBotMessage, createUserMessage, createLoadingMessage]);
+  }, []);
 
   const handleSendMessage = useCallback((message: string) => {
     // Temporarily disable input to prevent rapid sending
@@ -108,7 +72,7 @@ export function useChatbot(): ChatbotState & {
     
     // Add user message with slight delay
     setTimeout(() => {
-      const userMessage = createUserMessageCustom(message);
+      const userMessage = UserMessageFactory.createMessage(message);
       setMessages(prev => [...prev, userMessage]);
       
       // Add bot response with additional delay
@@ -119,17 +83,11 @@ export function useChatbot(): ChatbotState & {
             setContactData(prev => ({ ...prev, email: normalizedEmail }));
             setContactStep('message');
 
-            const botMessage = createBotMessage(
-              "Great! Now please enter your message.",
-              ['Return']
-            );
+            const botMessage = BotMessageFactory.createContactMessagePrompt();
             setMessages(prev => [...prev, botMessage]);
             setIsInputEnabled(true);
           } else {
-            const botMessage = createBotMessage(
-              "⚠️ Please enter a valid email address.",
-              ['Return']
-            );
+            const botMessage = BotMessageFactory.createEmailValidationError();
             setMessages(prev => [...prev, botMessage]);
             setIsInputEnabled(true);
           }
@@ -138,14 +96,12 @@ export function useChatbot(): ChatbotState & {
           setContactStep('confirmation');
           // Keep input disabled for confirmation step
 
-          const botMessage = createBotMessage(
-            `Would you like to send this message from ${contactData.email}?\n\nMessage: "${message}"`
-          );
+          const botMessage = BotMessageFactory.createContactConfirmation(contactData.email, message);
           setMessages(prev => [...prev, botMessage]);
         }
       }, 800); // Bot response delay
     }, 200); // User message delay
-  }, [contactStep, contactData.email, createUserMessageCustom, createBotMessage]);
+  }, [contactStep, contactData.email]);
 
   const handleConfirmSend = useCallback(async () => {
     setIsEmailSending(true);
@@ -166,16 +122,10 @@ export function useChatbot(): ChatbotState & {
 
       setTimeout(() => {
         if (response.ok && result.success) {
-          const botMessage = createBotMessage(
-            "✅ Thank you! Your message has been sent successfully. I'll get back to you soon!",
-            ['Return']
-          );
+          const botMessage = BotMessageFactory.createEmailSuccessMessage();
           setMessages(prev => [...prev, botMessage]);
         } else {
-          const botMessage = createBotMessage(
-            "Sorry, there was an error sending your message. Please try again later or contact me directly at zz6cod@gmail.com.",
-            ['Return']
-          );
+          const botMessage = BotMessageFactory.createEmailErrorMessage();
           setMessages(prev => [...prev, botMessage]);
         }
         setContactStep(null);
@@ -185,17 +135,14 @@ export function useChatbot(): ChatbotState & {
     } catch (error) {
       console.error('Failed to send email:', error);
       setTimeout(() => {
-        const botMessage = createBotMessage(
-          "Sorry, there was an error sending your message. Please try again later or contact me directly at zz6cod@gmail.com.",
-          ['Return']
-        );
+        const botMessage = BotMessageFactory.createEmailErrorMessage();
         setMessages(prev => [...prev, botMessage]);
         setContactStep(null);
         setIsInputEnabled(false);
         setIsEmailSending(false);
       }, 500);
     }
-  }, [contactData, createBotMessage]);
+  }, [contactData]);
 
   const handleCancelSend = useCallback(() => {
     handleBackToHome();
@@ -203,90 +150,15 @@ export function useChatbot(): ChatbotState & {
 
   const handleAboutButtonClick = useCallback((buttonText: string) => {
     // Add user message
-    const userMessage = createUserMessageCustom(buttonText);
+    const userMessage = UserMessageFactory.createMessage(buttonText);
     setMessages(prev => [...prev, userMessage]);
 
     // Bot response based on the button clicked
     setTimeout(() => {
-      let botResponse = '';
-      switch (buttonText) {
-        case 'Experience':
-          botResponse = `🏢 **Professional Experience**
-
-**Full-stack Developer** | Artistry Community (Aug. 2025 – Present)  
-- Improved the personal information page with Next.js
-- Built environments on AWS and setting up CI/CD pipelines
-
-**Previous Projects | Spectra Inc. (Nov. 2022 – Jul. 2025)**
-- Developed data processing and visualization APIs using Java and React
-- Implemented real-time statistics using Java and Elasticsearch
-- Performed zero-downtime AWS RDS deployments and optimized system performance
-- Integrated KakaoTalk API and improved existing systems
-- Leveraged AI to resolve development challenges and deliver multiple requirements in a short period
-- Independently managed SM Lead operations for 90+ client servers`;
-          break;
-        case 'Education':
-          botResponse = `🎓 **Education Background**
-
-**Molecular Biology** | Jeonbuk National University
-- Bioinformatics and computational methods exposure
-- Data analysis and statistical reasoning
-- Genomics and biological data handling
-- Applied biotechnology and experimental automation thinking`;
-          break;
-        case 'Technical Skills':
-          botResponse = `⚡ **Technical Skills**
-
-**Backend**
-• JAVA, Spring Framework, JPA
-• REST API, Kafka
-• Microservices architecture
-
-**Frontend**
-• React, JavaScript, TypeScript
-• Next.js, TailwindCSS
-• Modern component-based development
-
-**Databases & Search**
-• PostgreSQL, MySQL
-• ElasticSearch
-
-**DevOps & Infrastructure**
-• AWS (EC2, RDS, S3)
-• Kubernetes, Docker, ArgoCD
-• CI/CD, Jenkins, Git
-• Nginx, Grafana, Prometheus
-
-**Current Focus**
-• Full-stack architecture
-• Cloud-native development
-• System design & Algorithms`;
-          break;
-        case 'Social':
-          botResponse = `🌐 **Let's Connect**
-
-**GitHub**  
-[github.com/60cod](https://github.com/60cod)  
-Check out my latest projects and contributions
-
-**Email**  
-zz6cod@gmail.com  
-Feel free to reach out for collaboration or opportunities
-
-**LinkedIn**  
-[Yugyeong Na](https://www.linkedin.com/in/na60)
-Professional networking and career updates
-
-I'm always open to discussing new opportunities, collaborations, or interesting technical challenges!`;
-          break;
-        default:
-          botResponse = "I'd be happy to share more information. Please click on one of the buttons above.";
-      }
-
-      const botMessage = createBotMessage(botResponse, ['Return']);
+      const botMessage = BotMessageFactory.createAboutResponse(buttonText);
       setMessages(prev => [...prev, botMessage]);
     }, 600);
-  }, [createUserMessageCustom, createBotMessage]);
+  }, []);
 
   const handleBackToHome = useCallback(() => {
     setIsExpanded(false);

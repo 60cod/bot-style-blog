@@ -1,12 +1,25 @@
-export interface Message {
+// Base message interface
+export interface BaseMessage {
   id: string;
   content: string;
-  isBot: boolean;
+  timestamp: string;
+}
+
+// Bot-specific message interface
+export interface BotMessage extends BaseMessage {
+  isBot: true;
   buttons?: string[];
   isFullWidth?: boolean;
   selectedSection?: string;
-  timestamp?: string;
 }
+
+// User-specific message interface
+export interface UserMessage extends BaseMessage {
+  isBot: false;
+}
+
+// Union type for all messages
+export type Message = BotMessage | UserMessage;
 
 export type NavigationSection = 'Articles' | 'Projects' | 'About' | 'Contact';
 

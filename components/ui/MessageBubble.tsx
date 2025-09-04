@@ -10,7 +10,8 @@ interface MessageBubbleProps {
 }
 
 export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: MessageBubbleProps) {
-  if (message.isFullWidth) {
+  // Check if this is a bot message with full width capability
+  if (message.isBot && 'isFullWidth' in message && message.isFullWidth) {
     // Articles 섹션인 경우 실제 페이지 렌더링
     if (message.selectedSection === 'Articles') {
       return (
@@ -66,7 +67,7 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
       </div>
 
       {/* About navigation buttons */}
-      {message.isBot && message.buttons && message.buttons.some(btn => ['Experience', 'Education', 'Technical Skills', 'Social'].includes(btn)) && onAboutButtonClick && (
+      {message.isBot && 'buttons' in message && message.buttons && message.buttons.some(btn => ['Experience', 'Education', 'Technical Skills', 'Social'].includes(btn)) && onAboutButtonClick && (
         <div className="mt-3">
           <div className="flex flex-wrap gap-2">
             {message.buttons.filter(btn => ['Experience', 'Education', 'Technical Skills', 'Social'].includes(btn)).map((buttonText) => (
@@ -87,7 +88,7 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
       )}
 
       {/* Return Button for bot messages */}
-      {message.isBot && message.buttons?.includes('Return') && onReturnClick && (
+      {message.isBot && 'buttons' in message && message.buttons?.includes('Return') && onReturnClick && (
         <div className="flex justify-start mt-2">
           <NavigationButton onClick={onReturnClick}>
             Return
