@@ -94,6 +94,27 @@ The integration maps these Notion fields to the following article properties:
 - `article_excerpt` → `summary`
 - `cover` → `thumbnail`
 
+### Contact Form Email Setup
+
+The Contact workflow uses Resend for email sending. To set up:
+
+1. **Sign up for Resend**:
+   - Go to [resend.com](https://resend.com) and create a free account
+   - Free tier: 3,000 emails/month
+
+2. **Get API key**:
+   - Go to API Keys in your Resend dashboard
+   - Create a new API key
+
+3. **Add to environment**:
+   ```bash
+   RESEND_API_KEY=your_resend_api_key_here
+   ```
+
+4. **Domain setup** (Optional for development):
+   - For production, verify your domain in Resend dashboard
+   - Update the `from` field in `app/api/send-email/route.ts`
+
 ## Color Scheme
 
 - Primary: `#030213` (Dark navy)

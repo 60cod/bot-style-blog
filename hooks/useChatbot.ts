@@ -129,18 +129,50 @@ export function useChatbot(): ChatbotState & {
     }, 200); // User message delay
   }, [contactStep, contactData.email, createUserMessageCustom, createBotMessage]);
 
-  const handleConfirmSend = useCallback(() => {
-    // TODO: Implement actual email sending
-    setTimeout(() => {
-      const botMessage = createBotMessage(
-        "✅ Thank you! Your message has been sent successfully. I'll get back to you soon!",
-        ['Return']
-      );
-      setMessages(prev => [...prev, botMessage]);
-      setContactStep(null);
-      setIsInputEnabled(false);
-    }, 500);
-  }, [createBotMessage]);
+  const handleConfirmSend = useCallback(async () => {
+    try {
+      // Send email via API
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: contactData.email,
+          message: contactData.message,
+        }),
+      });
+
+      setTimeout(() => {
+        if (response.ok) {
+          const botMessage = createBotMessage(
+            "Thank you! Your message has been sent successfully. I'll get back to you soon!",
+            ['Return']
+          );
+          setMessages(prev => [...prev, botMessage]);
+        } else {
+          const botMessage = createBotMessage(
+            "Sorry, there was an error sending your message. Please try again later or contact me directly at zz6cod@gmail.com.",
+            ['Return']
+          );
+          setMessages(prev => [...prev, botMessage]);
+        }
+        setContactStep(null);
+        setIsInputEnabled(false);
+      }, 500);
+    } catch (error) {
+      console.error('Failed to send email:', error);
+      setTimeout(() => {
+        const botMessage = createBotMessage(
+          "Sorry, there was an error sending your message. Please try again later or contact me directly at zz6cod@gmail.com.",
+          ['Return']
+        );
+        setMessages(prev => [...prev, botMessage]);
+        setContactStep(null);
+        setIsInputEnabled(false);
+      }, 500);
+    }
+  }, [contactData, createBotMessage]);
 
   const handleCancelSend = useCallback(() => {
     handleBackToHome();
