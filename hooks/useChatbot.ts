@@ -1,10 +1,11 @@
 import { useState, useCallback } from 'react';
-import { Message, NavigationSection, ChatbotState, ContactStep, ContactData } from '@/types';
+import { Message, NavigationSection, ChatbotState, ContactStep, AboutStep, ContactData } from '@/types';
 import { createUserMessage, createLoadingMessage, createInitialMessage } from '@/lib/message-utils';
 import { isValidEmail, normalizeEmail } from '@/lib/email-utils';
 
 export function useChatbot(): ChatbotState & {
   handleSectionClick: (section: NavigationSection) => void;
+  handleAboutButtonClick: (buttonText: string) => void;
   handleBackToHome: () => void;
   handleSendMessage: (message: string) => void;
   handleConfirmSend: () => void;
@@ -15,6 +16,7 @@ export function useChatbot(): ChatbotState & {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isInputEnabled, setIsInputEnabled] = useState(false);
   const [contactStep, setContactStep] = useState<ContactStep | null>(null);
+  const [aboutStep, setAboutStep] = useState<AboutStep | null>(null);
   const [contactData, setContactData] = useState<ContactData>({ email: '', message: '' });
   const [isEmailSending, setIsEmailSending] = useState(false);
 
@@ -69,6 +71,21 @@ export function useChatbot(): ChatbotState & {
         );
         setMessages(prev => [...prev, botMessage]);
         setIsInputEnabled(true);
+      }, 600);
+    } else if (section === 'About') {
+      // About workflow - don't expand, show navigation buttons
+      setAboutStep('initial');
+
+      const userMessage = createUserMessageCustom(section);
+      setMessages(prev => [...prev, userMessage]);
+
+      // Bot response with about navigation buttons
+      setTimeout(() => {
+        const botMessage = createBotMessage(
+          "What would you like to know about me?",
+          ['Experience', 'Education', 'Technical Skills', 'Social']
+        );
+        setMessages(prev => [...prev, botMessage]);
       }, 600);
     } else {
       // Other sections - expand as usual
@@ -184,11 +201,99 @@ export function useChatbot(): ChatbotState & {
     handleBackToHome();
   }, []);
 
+  const handleAboutButtonClick = useCallback((buttonText: string) => {
+    // Add user message
+    const userMessage = createUserMessageCustom(buttonText);
+    setMessages(prev => [...prev, userMessage]);
+
+    // Bot response based on the button clicked
+    setTimeout(() => {
+      let botResponse = '';
+      switch (buttonText) {
+        case 'Experience':
+          botResponse = `🏢 **Professional Experience**
+
+**Full-stack Developer** | Artistry Community (Aug. 2025 – Present)  
+- Improved the personal information page with Next.js
+- Built environments on AWS and setting up CI/CD pipelines
+
+**Previous Projects | Spectra Inc. (Nov. 2022 – Jul. 2025)**
+- Developed data processing and visualization APIs using Java and React
+- Implemented real-time statistics using Java and Elasticsearch
+- Performed zero-downtime AWS RDS deployments and optimized system performance
+- Integrated KakaoTalk API and improved existing systems
+- Leveraged AI to resolve development challenges and deliver multiple requirements in a short period
+- Independently managed SM Lead operations for 90+ client servers`;
+          break;
+        case 'Education':
+          botResponse = `🎓 **Education Background**
+
+**Molecular Biology** | Jeonbuk National University
+- Bioinformatics and computational methods exposure
+- Data analysis and statistical reasoning
+- Genomics and biological data handling
+- Applied biotechnology and experimental automation thinking`;
+          break;
+        case 'Technical Skills':
+          botResponse = `⚡ **Technical Skills**
+
+**Backend**
+• JAVA, Spring Framework, JPA
+• REST API, Kafka
+• Microservices architecture
+
+**Frontend**
+• React, JavaScript, TypeScript
+• Next.js, TailwindCSS
+• Modern component-based development
+
+**Databases & Search**
+• PostgreSQL, MySQL
+• ElasticSearch
+
+**DevOps & Infrastructure**
+• AWS (EC2, RDS, S3)
+• Kubernetes, Docker, ArgoCD
+• CI/CD, Jenkins, Git
+• Nginx, Grafana, Prometheus
+
+**Current Focus**
+• Full-stack architecture
+• Cloud-native development
+• System design & Algorithms`;
+          break;
+        case 'Social':
+          botResponse = `🌐 **Let's Connect**
+
+**GitHub**  
+[github.com/60cod](https://github.com/60cod)  
+Check out my latest projects and contributions
+
+**Email**  
+zz6cod@gmail.com  
+Feel free to reach out for collaboration or opportunities
+
+**LinkedIn**  
+[Yugyeong Na](https://www.linkedin.com/in/na60)
+Professional networking and career updates
+
+I'm always open to discussing new opportunities, collaborations, or interesting technical challenges!`;
+          break;
+        default:
+          botResponse = "I'd be happy to share more information. Please click on one of the buttons above.";
+      }
+
+      const botMessage = createBotMessage(botResponse, ['Return']);
+      setMessages(prev => [...prev, botMessage]);
+    }, 600);
+  }, [createUserMessageCustom, createBotMessage]);
+
   const handleBackToHome = useCallback(() => {
     setIsExpanded(false);
     setShowInitialButtons(true);
     setIsInputEnabled(false);
     setContactStep(null);
+    setAboutStep(null);
     setContactData({ email: '', message: '' });
     setMessages([createInitialMessage()]);
   }, []);
@@ -199,9 +304,11 @@ export function useChatbot(): ChatbotState & {
     isExpanded,
     isInputEnabled,
     contactStep,
+    aboutStep,
     contactData,
     isEmailSending,
     handleSectionClick,
+    handleAboutButtonClick,
     handleBackToHome,
     handleSendMessage,
     handleConfirmSend,

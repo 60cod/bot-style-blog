@@ -20,8 +20,10 @@ export default function Chatbot() {
     isExpanded,
     isInputEnabled,
     contactStep,
+    aboutStep,
     isEmailSending,
     handleSectionClick,
+    handleAboutButtonClick,
     handleBackToHome,
     handleSendMessage,
     handleConfirmSend,
@@ -61,6 +63,7 @@ export default function Chatbot() {
                 <MessageBubble 
                   message={message} 
                   onReturnClick={handleBackToHome}
+                  onAboutButtonClick={handleAboutButtonClick}
                 />
               </div>
             ))}
@@ -71,8 +74,8 @@ export default function Chatbot() {
             <NavigationButtons onSectionClick={handleSectionClick} />
           )}
 
-          {/* Return Button for expanded sections (not Contact) */}
-          {isExpanded && !showInitialButtons && contactStep === null && (
+          {/* Return Button for expanded sections (not Contact or About) */}
+          {isExpanded && !showInitialButtons && contactStep === null && aboutStep === null && (
             <div className="flex justify-left mt-3">
               <NavigationButton onClick={handleBackToHome}>
                 Return

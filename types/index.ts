@@ -12,6 +12,8 @@ export type NavigationSection = 'Articles' | 'Projects' | 'About' | 'Contact';
 
 export type ContactStep = 'initial' | 'email' | 'message' | 'confirmation';
 
+export type AboutStep = 'initial' | 'experience' | 'education' | 'skills' | 'social';
+
 export interface ContactData {
   email: string;
   message: string;
@@ -23,6 +25,7 @@ export interface ChatbotState {
   isExpanded: boolean;
   isInputEnabled: boolean;
   contactStep: ContactStep | null;
+  aboutStep: AboutStep | null;
   contactData: ContactData;
   isEmailSending: boolean;
 }

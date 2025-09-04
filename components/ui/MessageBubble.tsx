@@ -6,9 +6,10 @@ import { NavigationButton } from './NavigationButton';
 interface MessageBubbleProps {
   message: Message;
   onReturnClick?: () => void;
+  onAboutButtonClick?: (buttonText: string) => void;
 }
 
-export function MessageBubble({ message, onReturnClick }: MessageBubbleProps) {
+export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: MessageBubbleProps) {
   if (message.isFullWidth) {
     // Articles 섹션인 경우 실제 페이지 렌더링
     if (message.selectedSection === 'Articles') {
@@ -43,7 +44,7 @@ export function MessageBubble({ message, onReturnClick }: MessageBubbleProps) {
       {/* Message bubble with timestamp */}
       <div
         className={`flex items-end gap-2 ${
-          message.isBot ? "flex-row-reverse" : ""
+          message.isBot ? "flex-row-reverse justify-start" : ""
         }`}
       >
         {message.timestamp && (
@@ -63,6 +64,27 @@ export function MessageBubble({ message, onReturnClick }: MessageBubbleProps) {
           <p className="whitespace-pre-wrap">{message.content}</p>
         </div>
       </div>
+
+      {/* About navigation buttons */}
+      {message.isBot && message.buttons && message.buttons.some(btn => ['Experience', 'Education', 'Technical Skills', 'Social'].includes(btn)) && onAboutButtonClick && (
+        <div className="mt-3">
+          <div className="flex flex-wrap gap-2">
+            {message.buttons.filter(btn => ['Experience', 'Education', 'Technical Skills', 'Social'].includes(btn)).map((buttonText) => (
+              <NavigationButton key={buttonText} onClick={() => onAboutButtonClick(buttonText)}>
+                {buttonText}
+              </NavigationButton>
+            ))}
+          </div>
+          {/* Return Button for About section */}
+          {onReturnClick && (
+            <div className="flex justify-start mt-2">
+              <NavigationButton onClick={onReturnClick}>
+                Return
+              </NavigationButton>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Return Button for bot messages */}
       {message.isBot && message.buttons?.includes('Return') && onReturnClick && (
