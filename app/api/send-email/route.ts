@@ -26,8 +26,9 @@ export async function POST(request: Request) {
 
     // Send email using Resend
     const data = await resend.emails.send({
-      from: 'Contact Form <noreply@yourdomain.com>', // Replace with your verified domain
-      to: ['zz6cod@gmail.com'], // Your email address
+      from: 'Contact Form <noreply@ygna.blog>',
+      to: ['zz6cod@gmail.com'],
+      replyTo: email, // User can reply directly to the sender
       subject: 'New Contact Form Submission',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
