@@ -103,21 +103,23 @@ export class BotMessageFactory {
 
   static createAboutResponse(buttonText: string): Message {
     const responses: Record<string, string> = {
-      'Experience': "🏢 **Professional Experience**\n\n**Full-stack Developer** | Artistry Community (Aug. 2025 – Present)\n- Improved the personal information page with Next.js\n- Built environments on AWS and setting up CI/CD pipelines\n\n**Previous Projects | Spectra Inc. (Nov. 2022 – Jul. 2025)**\n- Developed data processing and visualization APIs using Java and React\n- Implemented real-time statistics using Java and Elasticsearch\n- Performed zero-downtime AWS RDS deployments and optimized system performance\n- Integrated KakaoTalk API and improved existing systems\n- Leveraged AI to resolve development challenges and deliver multiple requirements in a short period\n- Independently managed SM Lead operations for 90+ client servers",
+      'Experience': "💼 Professional Experience\n\nFull-stack Developer | Artistry Community (Aug. 2025 – Present)\n- Improved the personal information page with Next.js\n- Built environments on AWS and setting up CI/CD pipelines\n\n**Previous Projects | Spectra Inc. (Nov. 2022 – Jul. 2025)**\n- Developed data processing and visualization APIs using Java and React\n- Implemented real-time statistics using Java and Elasticsearch\n- Performed zero-downtime AWS RDS deployments and optimized system performance\n- Integrated KakaoTalk API and improved existing systems\n- Leveraged AI to resolve development challenges and deliver multiple requirements in a short period\n- Independently managed SM Lead operations for 90+ client servers",
       
-      'Education': "🎓 **Education Background**\n\n**Molecular Biology** | Jeonbuk National University\n- Bioinformatics and computational methods exposure\n- Data analysis and statistical reasoning\n- Genomics and biological data handling\n- Applied biotechnology and experimental automation thinking",
+      'Education': "🎓 Education Background\n\nMolecular Biology | Jeonbuk National University\n- Bioinformatics and computational methods exposure\n- Data analysis and statistical reasoning\n- Genomics and biological data handling\n- Applied biotechnology and experimental automation thinking",
       
-      'Technical Skills': "⚡ **Technical Skills**\n\n**Backend**\n• JAVA, Spring Framework, JPA\n• REST API, Kafka\n• Microservices architecture\n\n**Frontend**\n• React, JavaScript, TypeScript\n• Next.js, TailwindCSS\n• Modern component-based development\n\n**Databases & Search**\n• PostgreSQL, MySQL\n• ElasticSearch\n\n**DevOps & Infrastructure**\n• AWS (EC2, RDS, S3)\n• Kubernetes, Docker, ArgoCD\n• CI/CD, Jenkins, Git\n• Nginx, Grafana, Prometheus\n\n**Current Focus**\n• Full-stack architecture\n• Cloud-native development\n• System design & Algorithms",
+      'Technical Skills': "⚡ Technical Skills\n\nBackend\n• JAVA, Spring Framework, JPA\n• REST API, Kafka\n• Microservices architecture\n\nFrontend\n• React, JavaScript, TypeScript\n• Next.js, TailwindCSS\n• Modern component-based development\n\nDatabases & Search\n• PostgreSQL, MySQL\n• ElasticSearch\n\nDevOps & Infrastructure\n• AWS (EC2, RDS, S3)\n• Kubernetes, Docker, ArgoCD\n• CI/CD, Jenkins, Git\n• Nginx, Grafana, Prometheus\n\nCurrent Focus\n• Full-stack architecture\n• Cloud-native development\n• System design & Algorithms",
       
-      'Social': "🌐 **Let's Connect**\n\n**GitHub**\n[github.com/60cod](https://github.com/60cod)\n\n**Email**\nzz6cod@gmail.com\n\n**LinkedIn**\n[Yugyeong Na](https://www.linkedin.com/in/na60)\n\nI'm always open to discussing new opportunities, collaborations, or interesting technical challenges!"
+      'Social': "🌐 Let's Connect\n\nI'm always open to discussing new opportunities, collaborations, or interesting technical challenges!"
     };
 
+    const buttons = buttonText === 'Social' ? ['LinkedIn', 'GitHub', 'Email', 'Return'] : ['Return'];
+    
     return {
       id: this.generateId(),
       content: responses[buttonText] || "Thanks for your interest!",
       isBot: true,
       timestamp: this.getTimestamp(),
-      buttons: ['Return']
+      buttons: buttons
     };
   }
 }

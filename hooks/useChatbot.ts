@@ -149,7 +149,21 @@ export function useChatbot(): ChatbotState & {
   }, []);
 
   const handleAboutButtonClick = useCallback((buttonText: string) => {
-    // Add user message
+    // Handle social media links directly without adding user message
+    if (buttonText === 'LinkedIn') {
+      window.open('https://www.linkedin.com/in/na60', '_blank');
+      return;
+    }
+    if (buttonText === 'GitHub') {
+      window.open('https://github.com/60cod', '_blank');
+      return;
+    }
+    if (buttonText === 'Email') {
+      window.open('mailto:zz6cod@gmail.com', '_blank');
+      return;
+    }
+
+    // Add user message for other buttons
     const userMessage = UserMessageFactory.createMessage(buttonText);
     setMessages(prev => [...prev, userMessage]);
 

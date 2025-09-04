@@ -108,8 +108,30 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
         </div>
       )}
 
-      {/* Return Button for bot messages */}
-      {message.isBot && 'buttons' in message && message.buttons?.includes('Return') && onReturnClick && (
+      {/* Social media buttons */}
+      {message.isBot && 'buttons' in message && message.buttons && message.buttons.some(btn => ['GitHub', 'Email', 'LinkedIn'].includes(btn)) && onAboutButtonClick && (
+        <div className="mt-3">
+          <div className="flex flex-wrap gap-2">
+            {message.buttons.filter(btn => ['LinkedIn', 'GitHub', 'Email'].includes(btn)).map((buttonText) => (
+              <NavigationButton key={buttonText} onClick={() => onAboutButtonClick(buttonText)}>
+                {buttonText}
+              </NavigationButton>
+            ))}
+          </div>
+          {/* Return Button for Social section */}
+          {onReturnClick && (
+            <div className="flex justify-start mt-2">
+              <NavigationButton onClick={onReturnClick}>
+                Return
+              </NavigationButton>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Return Button for other bot messages */}
+      {message.isBot && 'buttons' in message && message.buttons?.includes('Return') && onReturnClick && 
+       !message.buttons.some(btn => ['Experience', 'Education', 'Technical Skills', 'Social', 'GitHub', 'Email', 'LinkedIn'].includes(btn)) && (
         <div className="flex justify-start mt-2">
           <NavigationButton onClick={onReturnClick}>
             Return
