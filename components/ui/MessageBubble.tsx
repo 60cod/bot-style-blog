@@ -3,6 +3,9 @@ import { BRAND_COLORS } from '@/constants';
 import { ArticlesPage } from '../ArticlesPage';
 import { ProjectsPage } from '../ProjectsPage';
 import { NavigationButton } from './NavigationButton';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLinkedin, faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 interface MessageBubbleProps {
   message: Message;
@@ -90,7 +93,7 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
       {/* About navigation buttons */}
       {message.isBot && 'buttons' in message && message.buttons && message.buttons.some(btn => ['Experience', 'Education', 'Technical Skills', 'Social'].includes(btn)) && onAboutButtonClick && (
         <div className="mt-3">
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-1">
             {message.buttons.filter(btn => ['Experience', 'Education', 'Technical Skills', 'Social'].includes(btn)).map((buttonText) => (
               <NavigationButton key={buttonText} onClick={() => onAboutButtonClick(buttonText)}>
                 {buttonText}
@@ -112,11 +115,22 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
       {message.isBot && 'buttons' in message && message.buttons && message.buttons.some(btn => ['GitHub', 'Email', 'LinkedIn'].includes(btn)) && onAboutButtonClick && (
         <div className="mt-3">
           <div className="flex flex-wrap gap-2">
-            {message.buttons.filter(btn => ['LinkedIn', 'GitHub', 'Email'].includes(btn)).map((buttonText) => (
-              <NavigationButton key={buttonText} onClick={() => onAboutButtonClick(buttonText)}>
-                {buttonText}
-              </NavigationButton>
-            ))}
+            {message.buttons.filter(btn => ['LinkedIn', 'GitHub', 'Email'].includes(btn)).map((buttonText) => {
+              const getButtonIcon = (text: string) => {
+                switch (text) {
+                  case 'LinkedIn': return <FontAwesomeIcon icon={faLinkedin} className="mr-2" />;
+                  case 'GitHub': return <FontAwesomeIcon icon={faGithub} className="mr-2" />;
+                  case 'Email': return <FontAwesomeIcon icon={faEnvelope} className="mr-2" />;
+                  default: return null;
+                }
+              };
+              
+              return (
+                <NavigationButton key={buttonText} onClick={() => onAboutButtonClick(buttonText)}>
+                  {getButtonIcon(buttonText)}{buttonText}
+                </NavigationButton>
+              );
+            })}
           </div>
           {/* Return Button for Social section */}
           {onReturnClick && (
