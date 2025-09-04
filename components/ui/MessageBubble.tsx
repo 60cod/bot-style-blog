@@ -45,15 +45,9 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
       {/* Message bubble with timestamp */}
       <div
         className={`flex items-end gap-2 ${
-          message.isBot ? "flex-row-reverse justify-start" : ""
+          message.isBot ? "justify-start" : ""
         }`}
       >
-        {message.timestamp && (
-          <span className="text-xs text-gray-400 whitespace-nowrap">
-            {message.timestamp}
-          </span>
-        )}
-
         <div
           className={`rounded-2xl px-4 py-3 text-sm ${
             message.isBot
@@ -64,6 +58,12 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
         >
           <p className="whitespace-pre-wrap">{message.content}</p>
         </div>
+
+        {message.timestamp && (
+            <span className="text-xs text-gray-400 whitespace-nowrap">
+            {message.timestamp}
+          </span>
+        )}
       </div>
 
       {/* About navigation buttons */}
