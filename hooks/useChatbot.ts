@@ -143,8 +143,10 @@ export function useChatbot(): ChatbotState & {
         }),
       });
 
+      const result = await response.json();
+
       setTimeout(() => {
-        if (response.ok) {
+        if (response.ok && result.success) {
           const botMessage = createBotMessage(
             "✅ Thank you! Your message has been sent successfully. I'll get back to you soon!",
             ['Return']
