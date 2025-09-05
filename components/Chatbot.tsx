@@ -43,7 +43,7 @@ export default function Chatbot() {
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 p-4">
       <div className={`flex flex-col shadow-lg border border-gray-200 transition-all duration-500 ease-in-out rounded-lg bg-white ${
-        isExpanded ? "w-[1000px] h-[1200px]" : "w-[600px] h-[900px]"
+        isExpanded ? "w-full max-w-[1000px] h-[90vh] max-h-[1200px]" : "w-full max-w-[600px] h-[80vh] max-h-[900px]"
       }`}>
         
         {/* Header */}

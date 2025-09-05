@@ -15,6 +15,7 @@ export function ArticlesPage() {
   const [allCategories, setAllCategories] = useState<ArticleCategory[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [itemsPerPage, setItemsPerPage] = useState(3);
 
   useEffect(() => {
     async function loadArticles() {
@@ -36,6 +37,17 @@ export function ArticlesPage() {
     }
 
     loadArticles();
+  }, []);
+
+  // 반응형 itemsPerPage 설정
+  useEffect(() => {
+    const updateItemsPerPage = () => {
+      setItemsPerPage(window.innerWidth < 640 ? 1 : 3);
+    };
+    
+    updateItemsPerPage();
+    window.addEventListener('resize', updateItemsPerPage);
+    return () => window.removeEventListener('resize', updateItemsPerPage);
   }, []);
 
   // 필터링 로직
@@ -126,7 +138,7 @@ export function ArticlesPage() {
                 <PaginationCarousel
                   articles={articles}
                   onArticleSelect={handleArticleSelect}
-                  itemsPerPage={3}
+                  itemsPerPage={itemsPerPage}
                 />
               </div>
             ))

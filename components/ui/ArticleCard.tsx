@@ -9,7 +9,7 @@ interface ArticleCardProps {
 export function ArticleCard({ article, onSelect }: ArticleCardProps) {
   return (
     <div 
-      className="cursor-pointer min-w-[280px] w-[280px]"
+      className="cursor-pointer w-full sm:w-[280px] sm:min-w-[280px]"
       onClick={() => onSelect(article)}
     >
       <div className="bg-white rounded-lg overflow-hidden shadow-md">
