@@ -15,6 +15,16 @@ interface NotionProject {
   id: string;
   created_time: string;
   last_edited_time: string;
+  cover?: {
+    type: 'file' | 'external';
+    file?: {
+      url: string;
+      expiry_time?: string;
+    };
+    external?: {
+      url: string;
+    };
+  } | null;
   properties: {
     project_title: {
       title: Array<{
@@ -77,11 +87,21 @@ function transformNotionProject(notionProject: NotionProject): Project {
   const createdAt = notionProject.properties.project_start_date.date?.start || 
     notionProject.created_time;
 
+  // Extract cover image URL
+  let thumbnail = '';
+  if (notionProject.cover) {
+    if (notionProject.cover.type === 'file' && notionProject.cover.file?.url) {
+      thumbnail = notionProject.cover.file.url;
+    } else if (notionProject.cover.type === 'external' && notionProject.cover.external?.url) {
+      thumbnail = notionProject.cover.external.url;
+    }
+  }
+
   return {
     id: notionProject.id,
     title: title || 'Untitled Project',
     description: description || 'No description available',
-    thumbnail: '', // Notion doesn't provide thumbnails in this structure, will use placeholder
+    thumbnail,
     techStack,
     liveUrl: notionProject.properties.project_demo_url.url || undefined,
     githubUrl: notionProject.properties.project_github_url.url || undefined,
