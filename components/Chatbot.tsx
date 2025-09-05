@@ -41,9 +41,10 @@ export default function Chatbot() {
   }, [messages]);
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 p-4">
-      <div className={`flex flex-col shadow-lg border border-gray-200 transition-all duration-500 ease-in-out rounded-lg bg-white ${
-        isExpanded ? "w-full max-w-[1000px] h-[90vh] max-h-[1200px]" : "w-full max-w-[600px] h-[80vh] max-h-[900px]"
+    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 p-0 sm:p-4">
+      <div className={`flex flex-col shadow-lg border border-gray-200 transition-all duration-500 ease-in-out bg-white ${
+        "w-full h-screen sm:rounded-lg sm:max-w-[600px] sm:h-[80vh] sm:max-h-[900px] " +
+        (isExpanded ? "lg:max-w-[1000px] lg:h-[90vh] lg:max-h-[1200px]" : "")
       }`}>
         
         {/* Header */}
