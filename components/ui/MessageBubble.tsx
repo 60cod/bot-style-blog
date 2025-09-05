@@ -19,10 +19,7 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
     // Articles 섹션인 경우 실제 페이지 렌더링
     if (message.selectedSection === 'Articles') {
       return (
-        <div 
-          className="w-full bg-white rounded-2xl rounded-bl-none overflow-y-auto"
-          style={{ height: '810px' }}
-        >
+        <div className="w-full bg-white rounded-2xl rounded-bl-none">
           <ArticlesPage />
         </div>
       );
@@ -31,10 +28,7 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
     // Projects 섹션인 경우 실제 페이지 렌더링
     if (message.selectedSection === 'Projects') {
       return (
-        <div 
-          className="w-full bg-white rounded-2xl rounded-bl-none overflow-y-auto"
-          style={{ height: '810px' }}
-        >
+        <div className="w-full bg-white rounded-2xl rounded-bl-none">
           <ProjectsPage />
         </div>
       );
@@ -42,10 +36,7 @@ export function MessageBubble({ message, onReturnClick, onAboutButtonClick }: Me
 
     // 기본 로딩 화면
     return (
-      <div 
-        className="w-full bg-gray-100 rounded-2xl rounded-bl-none p-4 flex items-center justify-center overflow-y-auto"
-        style={{ height: '810px' }}
-      >
+      <div className="w-full bg-gray-100 rounded-2xl rounded-bl-none p-4 flex items-center justify-center">
         <div className="text-center">
           <h3 className="mb-2">Loading {message.selectedSection}...</h3>
           <p className="text-gray-600">

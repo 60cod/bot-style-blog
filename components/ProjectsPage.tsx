@@ -40,7 +40,7 @@ export function ProjectsPage() {
   };
 
   return (
-    <div className="h-full overflow-y-auto bg-gray-50">
+    <div className="bg-gray-50">
       <div className="p-6 space-y-6">
         {/* Header Section */}
         <div className="space-y-4">
