@@ -6,7 +6,7 @@ export class UserMessageFactory {
   }
 
   private static getTimestamp(): string {
-    return new Date().toLocaleTimeString('en-US', { 
+    return new Date().toLocaleTimeString([], { 
       hour: '2-digit', 
       minute: '2-digit' 
     });
